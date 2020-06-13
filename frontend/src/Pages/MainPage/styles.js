@@ -21,12 +21,35 @@ const useStyles = makeStyles(() => ({
     borderRadius: "10px",
   },
 
+  textField1: {
+    heigth: "80%",
+    width: "98%",
+    backgroundColor: "white",
+    float: "left",
+    borderRadius: "10px",
+  },
+
   fieldBox: {
     borderRadius: "10px",
     width: "100%",
     backgroundColor: "white",
     padding: "15px",
     height: "85px",
+    margin: "15px",
+  },
+
+  fieldBox1: {
+    borderRadius: "10px",
+    width: "50%",
+    height: "85px",
+    float: "left",
+  },
+
+  fieldBox2: {
+    borderRadius: "10px",
+    width: "50%",
+    height: "85px",
+    float: "left",
   },
 
   text: {

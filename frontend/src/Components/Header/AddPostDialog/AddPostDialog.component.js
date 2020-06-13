@@ -53,6 +53,7 @@ const AddPostDialog = ({ isOpen, closeModal }) => {
         country: country,
         city: city,
         category: category,
+        name: name,
         cost: cost,
         author: current_user_id,
         picture: picture,

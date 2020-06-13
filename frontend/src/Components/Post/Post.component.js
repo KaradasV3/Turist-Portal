@@ -49,6 +49,7 @@ const Post = ({
   const [addShowed, setAddshowed] = React.useState(false);
   const [message, setMessage] = React.useState("");
   const [acceptButtonShowed, setAcceptButtonShowed] = React.useState(true);
+  const [deleteButtonShowed, setDeleteButtonShowed] = React.useState(true);
   const current_user_id = localStorage.getItem("id");
   const isAdmin = current_user_id === "5e1ccda958095c0d6011ca8f";
   if (!comments) {
@@ -81,6 +82,16 @@ const Post = ({
     setAcceptButtonShowed(!acceptButtonShowed);
   };
 
+  const handleDeleteButton = async () => {
+    try {
+      api.delete(`post/${id}`, {});
+      toast.success("Post deltetd");
+    } catch (ex) {
+      toast.error(_.get(ex, "response.data.message") || "Sorry, something went wrong");
+    }
+    window.location.reload();
+  };
+
   const handleSendComment = async () => {
     try {
       api.post("/comment", {
@@ -95,7 +106,9 @@ const Post = ({
     }
 
     setAddshowed(!addShowed);
-    refetchComments();
+    setTimeout(() => {
+      refetchComments();
+    }, 100);
   };
 
   const handleChange = (setter) => (event) => {
@@ -143,6 +156,12 @@ const Post = ({
             Accept
           </Button>
         )}
+
+        {isAdmin && deleteButtonShowed && (
+          <Button className={classes.deleteButton} onClick={handleDeleteButton}>
+            Delete
+          </Button>
+        )}
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
@@ -173,16 +192,15 @@ const Post = ({
       )}
       {commentsToPost.length > 0
         ? shown &&
-          commentsToPost.map(({ comm_id, commentAuthor, message, date, post }) => (
+          commentsToPost.map(({ _id, commentAuthor, message, date, post }) => (
             <Comment
-              key={comm_id}
+              key={_id}
               {...{
-                comm_id,
+                _id,
                 commentAuthor,
                 message,
                 date,
                 post,
-                comm_id
               }}
             ></Comment>
           ))

@@ -19,6 +19,12 @@ const useStyles = makeStyles(() => ({
     fontSize: "0.6rem",
     textAlign: "right",
   },
+
+  deleteButton: {
+    backgroundColor: "#cc5e5e",
+    marginLeft: "auto",
+    float: "right",
+  },
 }));
 
 export default useStyles;

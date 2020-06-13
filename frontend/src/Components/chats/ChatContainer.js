@@ -80,6 +80,7 @@ export default class ChatContainer extends Component {
     };
   };
 
+  
   /*
    *	Updates the typing of chat with id passed in.
    *	@param chatId {number}

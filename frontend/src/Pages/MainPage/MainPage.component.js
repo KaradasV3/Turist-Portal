@@ -13,6 +13,19 @@ const MainPage = () => {
   const classes = useStyles();
   const { data: posts } = useFetch("/posts");
   const [value, setValue] = React.useState("");
+  {
+    /**new */
+  }
+  const [categoryy, setCategory] = React.useState("");
+  const onCategoryChange = (event) => setCategory(event.target.value);
+
+  const [user, setUser] = React.useState("");
+  const onUserChange = (event) => setUser(event.target.value);
+
+  {
+    /**new */
+  }
+
   if (!Boolean(posts)) {
     return <Loader type="ThreeDots" color="#077324" height={700} width={700} timeout={3000} />;
   }
@@ -20,9 +33,7 @@ const MainPage = () => {
   const current_user_id = localStorage.getItem("id");
   const isAdmin = current_user_id === "5e1ccda958095c0d6011ca8f";
   let postsCountry = posts.filter((post) => post.country === value);
-  postsCountry = isAdmin
-    ? postsCountry
-    : posts.filter((post) => (post.country === value) & (post.accepted === true));
+  postsCountry = isAdmin ? postsCountry : posts.filter((post) => post.accepted === true);
 
   const theme = createMuiTheme({
     overrides: {
@@ -33,6 +44,15 @@ const MainPage = () => {
       },
     },
   });
+
+  const categories = [
+    { label: "Cities" },
+    { label: "Atractions" },
+    { label: "Food" },
+    { label: "Transport" },
+    { label: "Hotels" },
+    { label: "Others" },
+  ];
 
   const countries = [
     { code: "AD", label: "Andorra", phone: "376" },
@@ -289,25 +309,70 @@ const MainPage = () => {
     options: countries.map((option) => option.label),
   };
 
-  return (
+  const flatProps2 = {
+    options: categories.map((option) => option.label),
+  };
+
+ return (
     <Box className={classes.content}>
       <Header />
       <Grid container spacing={0} style={{ marginTop: "10vh" }}>
         <Grid item xs={10} className={classes.search}>
           <MuiThemeProvider theme={theme}>
             <Tooltip title="here" arrow placement="right-start">
-              <Box className={classes.fieldBox}>
-                <Autocomplete
-                  {...flatProps}
-                  onChange={(event, newInputValue) => {
-                    setValue(newInputValue);
-                  }}
-                  className={classes.textField}
-                  value={value}
-                  renderInput={(params) => (
-                    <TextField {...params} fullWidth label="Choose a country" variant="outlined" />
-                  )}
-                />
+              <Box>
+                <Box className={classes.fieldBox}>
+                  <Autocomplete
+                    {...flatProps}
+                    onChange={(event, newInputValue) => {
+                      setValue(newInputValue);
+                    }}
+                    className={classes.textField}
+                    value={value}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        fullWidth
+                        label="Choose a country"
+                        variant="outlined"
+                      />
+                    )}
+                  />
+                </Box>
+                {/**newwwwwwww */}
+                {value && postsCountry.length > 0 && (
+                  <Box className={classes.fieldBox}>
+                    <Box className={classes.fieldBox2}>
+                      <TextField
+                        className={classes.textField1}
+                        value={user}
+                        onChange={onUserChange}
+                        label="User"
+                        variant="outlined"
+                        type="text"
+                      ></TextField>
+                    </Box>
+
+                    <Box className={classes.fieldBox1}>
+                      <Autocomplete
+                        {...flatProps2}
+                        onInputChange={(event, newInputValue) => {
+                          setCategory(newInputValue);
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            value={categoryy}
+                            onChange={onCategoryChange}
+                            label="Category"
+                            variant="outlined"
+                            type="text"
+                          />
+                        )}
+                      />
+                    </Box>
+                  </Box>
+                )}
               </Box>
             </Tooltip>
           </MuiThemeProvider>
@@ -321,23 +386,11 @@ const MainPage = () => {
           className={classes.posts}
           style={{ marginTop: "10vh" }}
         >
-          {postsCountry.map(
-            ({
-              _id: id,
-              country,
-              city,
-              category,
-              name,
-              cost,
-              author,
-              picture,
-              description,
-              accepted,
-            }) => (
-              <Grid key={id} item xs={"auto"}>
-                <Post
-                  {...{
-                    id,
+          {categoryy
+            ? user
+              ? postsCountry.map(
+                  ({
+                    _id: id,
                     country,
                     city,
                     category,
@@ -347,12 +400,130 @@ const MainPage = () => {
                     picture,
                     description,
                     accepted,
-                  }}
-                />
-                )}
-              </Grid>
-            )
-          )}
+                  }) => (
+                    <Grid key={id} item xs={"auto"}>
+                      {category === categoryy && author.name + " " + author.surname === user && (
+                        <Post
+                          {...{
+                            id,
+                            country,
+                            city,
+                            category,
+                            name,
+                            cost,
+                            author,
+                            picture,
+                            description,
+                            accepted,
+                          }}
+                        />
+                      )}
+                      )}
+                    </Grid>
+                  )
+                )
+              : postsCountry.map(
+                  ({
+                    _id: id,
+                    country,
+                    city,
+                    category,
+                    name,
+                    cost,
+                    author,
+                    picture,
+                    description,
+                    accepted,
+                  }) => (
+                    <Grid key={id} item xs={"auto"}>
+                      {category === categoryy && (
+                        <Post
+                          {...{
+                            id,
+                            country,
+                            city,
+                            category,
+                            name,
+                            cost,
+                            author,
+                            picture,
+                            description,
+                            accepted,
+                          }}
+                        />
+                      )}
+                      )}
+                    </Grid>
+                  )
+                )
+            : user
+            ? postsCountry.map(
+                ({
+                  _id: id,
+                  country,
+                  city,
+                  category,
+                  name,
+                  cost,
+                  author,
+                  picture,
+                  description,
+                  accepted,
+                }) => (
+                  <Grid key={id} item xs={"auto"}>
+                    {author.name + " " + author.surname === user && (
+                      <Post
+                        {...{
+                          id,
+                          country,
+                          city,
+                          category,
+                          name,
+                          cost,
+                          author,
+                          picture,
+                          description,
+                          accepted,
+                        }}
+                      />
+                    )}
+                    )}
+                  </Grid>
+                )
+              )
+            : postsCountry.map(
+                ({
+                  _id: id,
+                  country,
+                  city,
+                  category,
+                  name,
+                  cost,
+                  author,
+                  picture,
+                  description,
+                  accepted,
+                }) => (
+                  <Grid key={id} item xs={"auto"}>
+                    <Post
+                      {...{
+                        id,
+                        country,
+                        city,
+                        category,
+                        name,
+                        cost,
+                        author,
+                        picture,
+                        description,
+                        accepted,
+                      }}
+                    />
+                    )}
+                  </Grid>
+                )
+              )}
+          }
         </Grid>
       </Grid>
     </Box>

@@ -52,9 +52,13 @@ const useStyles = makeStyles(() => ({
     margin: "0.5%",
   },
   acceptButton: {
-    backgroundColor: "#c29fff",
+    backgroundColor: "#66d17f",
 
     marginLeft: "auto",
+  },
+
+  deleteButton: {
+    backgroundColor: "#cc5e5e",
   },
 }));
 

@@ -13,7 +13,7 @@ const getComments = async (req, res, next) => {
 
 const getComment = async (req, res, next) => {
   try {
-    const comment = await Comment.findById(req.params.postId)
+    const comment = await Comment.findById(req.params.commentId)
       .populate("commentAuthor")
       .populate("post");
     res.json(comment);
@@ -35,8 +35,8 @@ const addComment = async (req, res, next) => {
 
 const deleteComment = async (req, res, next) => {
   try {
-    await Comment.findByIdAndDelete(req.params.postId);
-    res.json({ message: "Post deleted successfully" });
+    await Comment.findByIdAndDelete(req.params.commentId);
+    res.json({ message: "Comment deleted successfully" });
   } catch (ex) {
     next(ex);
   }
