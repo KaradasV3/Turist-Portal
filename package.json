@@ -1,7 +1,7 @@
 {
   "devDependencies": {
     "concurrently": "^5.0.2",
-    "validator": "^12.2.0"
+    "validator": "^13.7.0"
   },
   "scripts": {
     "start": "concurrently \"yarn backend\" \"yarn frontend\"",
